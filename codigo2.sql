@@ -59,7 +59,7 @@ COMMENT ON COLUMN lojas.logo_ultima_atualizacao         IS      'Informa a últi
 CREATE TABLE produtos (
                 produto_id                              NUMERIC(38)       NOT NULL,
                 nome                                    VARCHAR(255)      NOT NULL,
-                preco_unitario                          NUMERIC(10,2) CHECK (preco_unitario > 0),
+                preco_unitario                          NUMERIC(10,2),
                 detalhes                                BYTEA,
                 imagem                                  BYTEA,
                 imagem_mimi_type                        VARCHAR(512),
@@ -153,13 +153,13 @@ CREATE TABLE    pedidos_itens (
                 envio_id                                NUMERIC(38),
                 CONSTRAINT pedido_item PRIMARY KEY (pedido_id, produto_id)
 );
-COMMENT ON TABLE pedidos_itens                        IS      'Tabela com as informações dos pedidos';
-COMMENT ON COLUMN pedidos_itens.pedido_id             IS      'Número de identificação dos pedidos';
-COMMENT ON COLUMN pedidos_itens.produto_id            IS      'Número de identificação dos produtos';
-COMMENT ON COLUMN pedidos_itens.numero_da_linha       IS      'Número da linha que o produto se encontra';
-COMMENT ON COLUMN pedidos_itens.preco_unitario        IS      'Preço unitário de cada produto';
-COMMENT ON COLUMN pedidos_itens.quantidade            IS      'Quantidade de pedidos feitos';
-COMMENT ON COLUMN pedidos_itens.envio_id              IS      'Número de identificação dos envios';
+COMMENT ON TABLE pedidos_itens                          IS      'Tabela com as informações dos pedidos';
+COMMENT ON COLUMN pedidos_itens.pedido_id               IS      'Número de identificação dos pedidos';
+COMMENT ON COLUMN pedidos_itens.produto_id              IS      'Número de identificação dos produtos';
+COMMENT ON COLUMN pedidos_itens.numero_da_linha         IS      'Número da linha que o produto se encontra';
+COMMENT ON COLUMN pedidos_itens.preco_unitario          IS      'Preço unitário de cada produto';
+COMMENT ON COLUMN pedidos_itens.quantidade              IS      'Quantidade de pedidos feitos';
+COMMENT ON COLUMN pedidos_itens.envio_id                IS      'Número de identificação dos envios';
 
 
 ALTER TABLE envios ADD CONSTRAINT lojas_envios_fk
@@ -224,3 +224,19 @@ REFERENCES pedidos (pedido_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
+
+
+
+ALTER TABLE produtos  ADD CONSTRAINT preco_positivo       CHECK(preco_unitario >= 0);
+ALTER TABLE estoques  ADD CONSTRAINT quantidade_positiva  CHECK(quantidade >= 0);
+ALTER TABLE pedidos   ADD CONSTRAINT status_certo         CHECK(status IN ('CANCELADO, COMPLETO, ABERTO, PAGO, REEMBOLSADO, ENVIADO'));
+ALTER TABLE envios    ADD CONSTRAINT status_certo_2       CHECK(status IN('CRIADO, ENVIADO, TRANSITO, ENTREGUE'));
+ALTER TABLE lojas     ADD CONSTRAINT usar_endereco      CHECK ((SELECT COUNT(*) FROM (SELECT COALESCE(endereco_web, '') AS endereco_web, COALESCE(endereco_fisico, '') AS endereco_fisico) AS sub
+        WHERE endereco_web <> '' OR endereco_fisico <> '') > 0);
+
+
+
+
+
+
+
