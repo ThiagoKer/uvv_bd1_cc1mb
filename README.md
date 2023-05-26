@@ -1,4 +1,3 @@
-# cc1mb_202305845_postgree.sql
 # PSET
 - **Aluno:** Thiago Ker Gama Nunes Carvalho
 - **Turma**:CC1MB
