@@ -27,7 +27,7 @@ Uma imagem do diagrama "lojas" que utilizamos como base para produzir o código 
 A princípio, criei o diagrama "lojas" no **SQL Power Architect** e com ele gerei parte do código no formato do **Postgres**. Desse modo, implementei mais alguns comandos no código, como o de criação do  banco de dados "uvv" e a criação do usuário "thiago". Por fim, a maior parte do código foi gerado com ajuda do **SQL Power Architect** mas ainda era necessário a criação de **CONSTRAINTS** no comando, para evitar que dados inválidos sejam inseridos no banco de dados. E a formatação do código, com o intuito de ter um melhor visual e facilidade no entendimento e procura de dados.
 
 ## Consulta SQL
-|Comando| Ação ||
+|Comando| Ação |
 |-|---|--|
 |DROP DATABASE|Deleta o banco de dados
 |DROP USER|Deleta o usuário
