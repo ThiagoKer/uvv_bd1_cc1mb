@@ -19,13 +19,15 @@ CREATE DATABASE uvv
 
 \c 'dbname=uvv user=thiago password=123';
 
---\c 'dbname=uvv user=thiago password=thiago123';
+
 
 CREATE SCHEMA lojas AUTHORIZATION thiago;
 
-ALTER USER thiago
+
 
 SET SEARCH_PATH TO lojas, "$user", public;
+
+ALTER USER thiago SET SEARCH_PATH TO lojas, "$user", public;
 
 
 CREATE TABLE lojas (
@@ -61,7 +63,7 @@ CREATE TABLE produtos (
                 nome                                    VARCHAR(255)      NOT NULL,
                 preco_unitario                          NUMERIC(10,2),
                 detalhes                                BYTEA,
-                imagem                                  BYTEA,
+                magem                                   BYTEA,
                 imagem_mimi_type                        VARCHAR(512),
                 imagem_arquivo                          VARCHAR(512),
                 imagem_charset                          VARCHAR(512),
@@ -144,7 +146,7 @@ COMMENT ON COLUMN pedidos.status                        IS      'Para acompanhar
 COMMENT ON COLUMN pedidos.loja_id                       IS      'Número de indetificação das lojas';
 
 
-CREATE TABLE    pedidos_itens (
+CREATE TABLE   pedidos_itens (
                 pedido_id                               NUMERIC(38)       NOT NULL,
                 produto_id                              NUMERIC(38)       NOT NULL,
                 numero_da_linha                         NUMERIC(38)       NOT NULL,
@@ -231,9 +233,6 @@ ALTER TABLE produtos  ADD CONSTRAINT preco_positivo       CHECK(preco_unitario >
 ALTER TABLE estoques  ADD CONSTRAINT quantidade_positiva  CHECK(quantidade >= 0);
 ALTER TABLE pedidos   ADD CONSTRAINT status_certo         CHECK(status IN ('CANCELADO, COMPLETO, ABERTO, PAGO, REEMBOLSADO, ENVIADO'));
 ALTER TABLE envios    ADD CONSTRAINT status_certo_2       CHECK(status IN('CRIADO, ENVIADO, TRANSITO, ENTREGUE'));
-ALTER TABLE lojas     ADD CONSTRAINT usar_endereco      CHECK ((SELECT COUNT(*) FROM (SELECT COALESCE(endereco_web, '') AS endereco_web, COALESCE(endereco_fisico, '') AS endereco_fisico) AS sub
-        WHERE endereco_web <> '' OR endereco_fisico <> '') > 0);
-
 
 
 
